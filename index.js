@@ -1,37 +1,44 @@
-const yargs = require('yargs/yargs')
-const { hideBin } = require('yargs/helpers')
 
-const contacts = require("./contacts");
+const { listContacts, getContactById, addContact, removeContact } = require("./contacts");
+const { Command } = require("commander");
+const program = new Command();
+program
+  .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
+
+program.parse(process.argv);
+
+const argv = program.opts();
 
 const  invokeAction = async ({ action, id, name, email, phone }) => {
     switch (action) {
       case "list":
-       const allContact = await contacts.listContacts();
+       const allContact = await listContacts();
        return console.log(allContact);
       
       case "get":
-       const contact = await contacts.getContactById(id);
+       const contact = await getContactById(id);
        return console.log(contact);
       
       case "add":
-        const newContact = await contacts.
-        // ... name email phone
-        break;
+        const newContact = await addContact(name, email, phone);
+        return console.log(newContact);
+               
   
       case "remove":
-        break;
-
+        const deleteContacts = await removeContact(id);
+        return console.log(deleteContacts);
+        
         default:
           console.warn("\x1B[31m Unknown action type!");
       }
     }
     
 
-
-    const arr = yargs(hideBin(process.argv)).argv;
-    const {argv} = yargs(arr);
-    console.log(argv);
-    invokeAction(argv);
+   invokeAction(argv);
     // invokeAction({action:'list'});
     // invokeAction({action:'get', id:'rsKkOQUi80UsgVPCcLZZW'});
 

@@ -1,5 +1,7 @@
-const fs = require('fs/promises');
+const fs = require("fs").promises;
+const { nanoid } = require('nanoid');
 const path = require('path');
+
 
 
 const contactPath = path.join(__dirname,'db','contacts.json');
@@ -8,8 +10,8 @@ const contactPath = path.join(__dirname,'db','contacts.json');
 
 const listContacts = async () => {
   try {
-    const response = await fs.readFile(contactPath);    
-    return JSON.parse(response);
+    const data = await fs.readFile(contactPath);    
+    return JSON.parse(data.toString());
   } catch (error) {
     console.log(error);
   }
@@ -18,27 +20,42 @@ const listContacts = async () => {
 
 const getContactById = async(contactId) => {
    try {
-    const contact = String(contactId);
+    // const contact = String(contactId);
    const contacts = await listContacts();
-   const response = contacts.find(item => item.id === contact);
-   return response || null;
+   return contacts.find(item => item.id === contactId) || null;
    } catch (error) {
     console.log(error);
    }
   };
  
-function removeContact(contactId) {
-  const contact = String(contactId); 
-  }; 
+const removeContact = async(contactId) => {
+  try {
+    // const contactsId = String(contactId);
+    const contacts = await listContacts();
+    const index = contacts.findIndex(item => item.id === contactId);
+    if(index === -1){
+      return null;
+    }
+    const [result] = contacts.splice(index, 1);
+    await fs.writeFile(contactPath, JSON.stringify(contacts, null, 2));
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+  };
 
 const addContact = async (name, email, phone) => {
  try {
-  const newContact = 
   const contacts = await listContacts();
+  const newContact = { id:nanoid(), name, email, phone };
+
+  contacts.push(newContact);
+  await fs.writeFile(contactPath, JSON.stringify(contacts, null, 2));
+  return newContact; 
  } catch (error) {
   console.log(error);
  }
-    // ...твій код
+   
   };
 
- module.exports = { listContacts, getContactById };
+ module.exports = { listContacts, getContactById, addContact, removeContact };

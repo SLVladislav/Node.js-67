@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index",
-    "start:dev": "nodemon index"
+    "dev": "nodemon index"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,8 @@
   },
   "homepage": "https://github.com/SLVladislav/Node.js-67#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "mongoose": "^7.2.1",
-    "nanoid": "^3.3.4",
-    "yargs": "^17.7.2"
+    "commander": "^10.0.1",
+    "nanoid": "^3.3.4"    
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
