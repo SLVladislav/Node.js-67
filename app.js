@@ -1,6 +1,9 @@
-// const express = require("express");
+const express = require("express");
+const moment = require('moment');
 
-// const app = express();  // app веб сервер
+const contacts = require('./contacts.json');
+
+const app = express();  // app веб сервер
 
 // app.get('/', (request, response)=>{
 //     response.send('<h2>Home page</h2>');
@@ -16,15 +19,34 @@
 
 // _________________________________________________________________
 
-const express = require("express");
 
-const contacts = require('./contacts.json')
+// app.get('/contacts', (req, res)=>{
+//     res.json(contacts);
+// // res.send(contacts);
+// })
 
-const app = express();  
+
+// app.listen(3000, ()=> console.log('Server running'));
+// _________________________________________________________________
+
+
+// app.use((req, res, next)=>{
+// console.log('First middleware');
+// next();
+// });
+
+// app.use((req, res, next)=>{
+//     console.log('Second middleware');
+//     next();
+//     });
+
+app.get('/products', (request, response)=>{
+    response.json([]);
+});
 
 app.get('/contacts', (req, res)=>{
-res.send(contacts);
-})
-
+    res.json(contacts);
+// res.send(contacts);
+});
 
 app.listen(3000, ()=> console.log('Server running'));
